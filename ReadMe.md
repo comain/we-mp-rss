@@ -171,6 +171,13 @@ npm run build
 # 友情链接
 [WeWe RSS](https://github.com/cooderl/wewe-rss)
 
+
+❤️ 赞助
+如果觉得 We-MP-RSS 对你有帮助，欢迎给我来一杯啤酒！
+![微信](docs/登录.png)
+
+
+
 ## 许可证
 
 MIT License
