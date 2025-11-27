@@ -18,6 +18,7 @@ from apis.sys_info import router as sys_info_router
 from apis.tags import router as tags_router
 from apis.export import router as export_router
 from apis.tools import router as tools_router
+from apis.github_update import router as github_router
 import apis
 import os
 from core.config import cfg,VERSION,API_BASE
@@ -70,6 +71,7 @@ api_router.include_router(sys_info_router)
 api_router.include_router(tags_router)
 api_router.include_router(export_router)
 api_router.include_router(tools_router)
+api_router.include_router(github_router)
 
 resource_router = APIRouter(prefix="/static")
 resource_router.include_router(res_router)

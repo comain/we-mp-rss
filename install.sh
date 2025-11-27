@@ -66,7 +66,8 @@ echo "环境变量已设置"
 chmod +x /app/environment.sh
 cat /app/environment.sh
 source /app/environment.sh
-
+echo "source /app/environment.sh
+source $plant/bin/activate">/etc/profile
 # pip3 install --upgrade pip
 
 # 检查requirements.txt更新
@@ -82,6 +83,4 @@ if [ -f "requirements.txt" ]; then
         echo $CURRENT_MD5 > $OLD_MD5_FILE
     fi
 fi 
-if [ "$WERSS_AUTH_WEB" = "True" ]; then
-    playwright install $BROWSER_TYPE --with-deps
-fi
+playwright install $BROWSER_TYPE --with-deps
