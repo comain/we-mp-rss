@@ -7,7 +7,8 @@ from driver.success import Success
 def auth():
     def run_auth():
         wx=WX_InterFace()
-        wx.Token(callback=Success)
+        # wx.Token(callback=Success)
+        wx.switch_account()
     
     thread = threading.Thread(target=run_auth)
     thread.start()

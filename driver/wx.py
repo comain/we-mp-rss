@@ -90,6 +90,7 @@ class Wx:
         try:
             self.Token(isClose=False)
             if self._haslogin is False:
+                self.Close()
                 self.GetCode(Success)
                 time.sleep(60)
                 return False
@@ -130,17 +131,22 @@ class Wx:
                             import random
                             if account_count > 0:
                                 # 点击第一个可切换的账号
-                                time.sleep(3)
                                 random_index = random.randint(0, account_count - 1)
+                                time.sleep(1)
                                 p=accounts.nth(random_index).locator("p")
                                 account_name=p.text_content()
                                 print(f"切换账号: {account_name}")
                                 p.click()
                                 # 等待页面加载并验证切换成功
                                 page.wait_for_load_state("networkidle", timeout=10000)
-                                 
-                                print_success("账号切换成功")
+                                time.sleep(5)
                                 self.Call_Success()
+                                self.Close()
+                                self.Token()
+                                print_success("账号切换成功")
+                                from jobs.notice import sys_notice
+                                from core.config import cfg
+                                sys_notice(f"账号切换成功\n- 账号名称: {account_name}", str(cfg.get("server.code_title","WeRss账号切换成功")))
                                 return True
                             else:
                                 print_warning("没有找到可切换的账号")
