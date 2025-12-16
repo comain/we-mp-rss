@@ -141,14 +141,23 @@ class Wx:
                                 p.click()
                                 # 等待页面加载并验证切换成功
                                 page.wait_for_load_state("networkidle", timeout=10000)
-                                time.sleep(5)
-                                self.Call_Success()
-                                self.Close()
-                                self.Token()
+                                time.sleep(2)
+                                self.Call_Success(has_extdata=False)
+
+                                self.Token(isClose=False)
                                 print_success("账号切换成功")
                                 from jobs.notice import sys_notice
                                 from core.config import cfg
-                                sys_notice(f"账号切换成功\n- 账号名称: {account_name} \n- 账号ID: {account_id} \n- 过期时间: {self.SESSION.get('expire_time')}", str(cfg.get("server.code_title","WeRss账号切换成功")))
+                                try:
+                                    cookies = self.controller.get_cookies()
+                                    exp=self.format_token(cookies)
+                                    exp_time=exp["expiry"]["expiry_time"]
+                                except Exception as e:
+                                    print_error(e)
+                                    exp_time="-"
+                                    pass
+                                self.Close()
+                                sys_notice(f"账号切换成功\n- 账号名称: {account_name} \n- 账号ID: {account_id} \n- 过期时间: {exp_time}", str(cfg.get("server.code_title","WeRss账号切换成功")))
                                 return True
                             else:
                                 print_warning("没有找到可切换的账号")
@@ -234,7 +243,8 @@ class Wx:
             
             # 创建新的控制器实例避免线程冲突
             controller=self.controller
-            controller.start_browser()    
+            if not  controller.is_browser_started():
+                controller.start_browser()    
             controller.open_url(f"{self.WX_HOME}?t=home/index&lang=zh_CN&token={token}")
             
             cookie = Store.load()
@@ -393,7 +403,7 @@ class Wx:
                 'wx_login_url': self.wx_login_url,
                 'expiry': cookie_expiry
             }
-    def Call_Success(self):
+    def Call_Success(self,has_extdata=True):
         """处理登录成功后的回调逻辑"""
         if not hasattr(self, 'controller') or self.controller is None:
             print_error("浏览器控制器未初始化")
@@ -412,7 +422,8 @@ class Wx:
         if  self._haslogin:
             try:
             # 使用更健壮的选择器定位元素
-                self.ext_data = self._extract_wechat_data()
+                if has_extdata:
+                    self.ext_data = self._extract_wechat_data()
             except Exception as e:
                 print_error(f"获取公众号信息失败: {str(e)}")
                 self.ext_data = None
@@ -465,7 +476,7 @@ class Wx:
                         else:
                             data[key] = element.text_content()
                         selector_found = True
-                        print_info(f"成功获取{key}，使用选择器: {selector}")
+                        # print_info(f"成功获取{key}，使用选择器: {selector}")
                         break
                 except Exception as e:
                     continue

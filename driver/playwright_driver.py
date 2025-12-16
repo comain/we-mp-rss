@@ -49,6 +49,14 @@ class PlaywrightController:
         except RuntimeError:
             # 如果没有正在运行的事件循环，则说明不是异步环境
             return False
+    
+    def is_browser_started(self):
+        """检测浏览器是否已启动"""
+        return (not self.isClose and 
+                self.driver is not None and 
+                self.browser is not None and 
+                self.context is not None and 
+                self.page is not None)
     def start_browser(self, headless=True, mobile_mode=False, dis_image=True, browser_name=browsers_name, language="zh-CN", anti_crawler=True):
         try:
             # 使用线程锁确保线程安全

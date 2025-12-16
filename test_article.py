@@ -66,12 +66,12 @@ def testLogin():
     from driver.base import WX_API
     from driver.success import Success
     # de_url=WX_API.GetCode(Success)
-    WX_API.switch_account("gh_804eaba2350a")
-    # rel=WX_API.Token(Success)
-    # if rel==False:
-    #     de_url=WX_API.GetCode(Success)
-    #     print(de_url)
-    #     input("按任意键退出")
+    WX_API.switch_account()
+    rel=WX_API.Token(Success)
+    if rel==False:
+        de_url=WX_API.GetCode(Success)
+        print(de_url)
+        input("按任意键退出")
 def testNotice():
     from jobs.notice import sys_notice
     text="""
@@ -143,7 +143,10 @@ async def test_Article():
     from driver.wxarticle import WXArticleFetcher
     v=await WXArticleFetcher().async_get_article_content("https://mp.weixin.qq.com/s/puc5q9xFmfMSy3OyqeYxZA")
     print(v)
-
+def test_send_wx_code():
+    from jobs.failauth import send_wx_code
+    send_wx_code()
+    input("按任意键退出")
 if __name__=="__main__":
     # import asyncio
     # test_screenshot()
@@ -155,7 +158,8 @@ if __name__=="__main__":
     # testWeb()
     # testNotice()
     # testMd2Doc()
-    testLogin()
+    # testLogin()
+    test_send_wx_code()
     # testCheckAuth()
     # testToken()  # 注释掉避免线程冲突
     # testMarkDown()

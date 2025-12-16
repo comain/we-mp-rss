@@ -640,6 +640,7 @@ class WeChatAPI:
     def switch_account(self,username:str=""):
         """切换微信公众号账号"""
         self.login_with_token()
+        return
         url = f"{self.base_url}/cgi-bin/switchacct?action=switch"
         
         headers = {
