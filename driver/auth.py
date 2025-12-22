@@ -1,4 +1,3 @@
-from nt import environ
 import threading
 from core.print import print_warning
 from driver.base import WX_InterFace
@@ -15,7 +14,7 @@ def auth():
     thread = threading.Thread(target=run_auth)
     thread.start()
     thread.join()  # 可选：等待完成
-if environ.get('WE_RSS.AUTH',False):
+if os.getenv('WE_RSS.AUTH',False):
     print_warning("启动授权定时任务")
     auth_task=TaskScheduler()
     auth_task.clear_all_jobs()

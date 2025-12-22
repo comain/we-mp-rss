@@ -1,5 +1,4 @@
 from asyncio import futures
-from nt import environ
 import os
 import platform
 import subprocess
@@ -61,7 +60,7 @@ class PlaywrightController:
     def start_browser(self, headless=True, mobile_mode=False, dis_image=True, browser_name=browsers_name, language="zh-CN", anti_crawler=True):
         try:
             # 使用线程锁确保线程安全
-            if  environ.get("NOT_HEADLESS",False):
+            if  os.getenv("NOT_HEADLESS",False):
                 headless = False
             else:
                 headless = True

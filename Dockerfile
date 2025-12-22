@@ -19,4 +19,3 @@ RUN chmod +x start.sh
 # 暴露端口
 EXPOSE 8001
 CMD ["bash", "start.sh"]
-# CMD ["sleep", "infinity"]
