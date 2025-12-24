@@ -10,10 +10,10 @@ from core.config import cfg
 class ViewCache:
     """视图缓存管理类"""
     
-    def __init__(self):
-        self.cache_dir = cfg.get("cache.views.dir", "data/cache/views")
-        self.default_ttl = cfg.get("cache.views.ttl", 1800)  # 默认30分钟
-        self.enabled = cfg.get("cache.views.enabled", True)
+    def __init__(self, cache_dir: str = None, default_ttl: int = 1800, enabled: bool = False):
+        self.cache_dir = cache_dir or cfg.get("cache.views.dir", "data/cache/views")
+        self.default_ttl = default_ttl or cfg.get("cache.views.ttl", 1800)  # 默认30分钟
+        self.enabled = enabled or cfg.get("cache.views.enabled", False)
         
         # 确保缓存目录存在
         if not os.path.exists(self.cache_dir):
@@ -113,6 +113,7 @@ class ViewCache:
 
 # 全局缓存实例
 view_cache = ViewCache()
+data_cache = ViewCache("data/cache/data", default_ttl=3600, enabled=True)  # 数据缓存，默认1小时
 
 def cache_view(prefix: str, ttl: Optional[int] = None, key_func=None):
     """
